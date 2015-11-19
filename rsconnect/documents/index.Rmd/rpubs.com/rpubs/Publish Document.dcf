@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+bundleId:
+        https://api.rpubs.com/api/v1/document/126834/a2a59f67d456478ea4df23b82bf47c54
+url: http://rpubs.com/tillvaxse/126834
+when: 1447822655.06642

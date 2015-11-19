@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Science Capstone</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Data Science Capstone">
+  <meta name="author" content="Solopov Ilya">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Data Science Capstone</h1>
+    <h2>Project</h2>
+    <p>Solopov Ilya<br/>Home</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The purpase of this project is analysis of received data to see how many the same data types in this the real data bases structure.
+The first task is the reseiving data by the next codes lines:</p>
+
+<pre><code class="r">fnames &lt;- c(&#39;business&#39;,&#39;checkin&#39;,&#39;review&#39;,&#39;tip&#39;,&#39;user&#39;)
+jfile &lt;- paste0(getwd(),&#39;/yelp_academic_dataset_&#39;,fnames,&#39;.json&#39;)
+dat &lt;- llply(as.list(jfile), function(x) stream_in(file(x),pagesize = 10000))
+names(dat) &lt;- fnames
+save.image(paste0(getwd(),&#39;/Capstone_Quiz.RData&#39;))
+</code></pre>
+
+<p>For the future job with this data this R session was saved in <em>Capstone_Quiz.RData</em> for load it an any time:</p>
+
+<pre><code class="r">load(paste0(getwd(),&quot;/Capstone_Quiz.RData&quot;))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Methods and Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Now lets looking for each files names into this data base</p>
+
+<pre><code class="r">fnames &lt;- c(&#39;business&#39;,&#39;checkin&#39;,&#39;review&#39;,&#39;tip&#39;,&#39;user&#39;)
+Names&lt;-sapply(fnames, function(x) names(dat[[x]]))
+</code></pre>
+
+<p>Now lets look how often the same data&#39;s name includes to this data bases  </p>
+
+<pre><code class="r">vec_Names&lt;-unlist(Names, recursive = TRUE)
+sort(table(vec_Names),decreasing = TRUE)
+</code></pre>
+
+<p>At the first position name &quot;type&quot;, but data with this name are different for each data base. So, lets analyse data with name at the second position  - <em>business_id</em></p>
+
+<pre><code class="r">load(paste0(getwd(),&quot;/Capstone_Quiz.RData&quot;))
+b&lt;-intersect(dat$business$business_id,dat$checkin$business_id)
+b&lt;-intersect(b,dat$review$business_id);b&lt;-intersect(b,dat$tip$business_id)
+Pr&lt;-sapply(fnames,function(x){length(b)/length(dat[[x]]$business_id)})
+PrD&lt;-data.frame(fnames,Pr)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Results</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Here we can see that there are the same data named <em>&quot;business_id&quot;</em> at all data files.  </p>
+
+<p>The percent of replied data for each data file we can see on figure below:  </p>
+
+<p><img src="assets/fig/unnamed-chunk-6-1.png" alt="plot of chunk unnamed-chunk-6"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Discussion</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>From this small investigation we can see how many the same data in this big data base there are.</p>
+
+<p>We see that the structure of theese files unisotropted and in the differen files we can see different percent of the same data</p>
+
+<p>File named <em>&quot;checkin&quot;</em> has the most equial data</p>
+
+<p>File named <em>&quot;user&quot;</em> hasn&#39;t any equial data at all</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Methods and Data'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Results'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Discussion'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
